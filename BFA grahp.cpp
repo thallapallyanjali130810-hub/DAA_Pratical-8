@@ -4,67 +4,75 @@
 using namespace std;
 
 class Graph {
-  int numVertices;
-  list<int>* adjLists;
-  bool* visited;
+    int numVertices;
+    list<int>* adjLists;
+    bool* visited;
 
-   public:
-  Graph(int vertices);
-  void addEdge(int src, int dest);
-  void BFS(int startVertex);
+public:
+    Graph(int vertices);
+    void addEdge(int src, int dest);
+    void BFS(int startVertex);
 };
 
-// Create a graph with given vertices,
-// and maintain an adjacency list
+// Create a graph
 Graph::Graph(int vertices) {
-  numVertices = vertices;
-  adjLists = new list<int>[vertices];
+    numVertices = vertices;
+    adjLists = new list<int>[vertices];
 }
 
-// Add edges to the graph
+// Add edges
 void Graph::addEdge(int src, int dest) {
-  adjLists[src].push_back(dest);
-  adjLists[dest].push_back(src);
+    adjLists[src].push_back(dest);
+    adjLists[dest].push_back(src);
 }
 
 // BFS algorithm
 void Graph::BFS(int startVertex) {
-  visited = new bool[numVertices];
-  for (int i = 0; i < numVertices; i++)
-    visited[i] = false;
+    visited = new bool[numVertices];
 
-  list<int> queue;
+    for (int i = 0; i < numVertices; i++)
+        visited[i] = false;
 
-  visited[startVertex] = true;
-  queue.push_back(startVertex);
+    list<int> queue;
 
-  list<int>::iterator i;
+    visited[startVertex] = true;
+    queue.push_back(startVertex);
 
-  while (!queue.empty()) {
-    int currVertex = queue.front();
-    cout << "Visited " << currVertex << " ";
-    queue.pop_front();
+    cout << "BFS Traversal: ";
 
-    for (i = adjLists[currVertex].begin(); i != adjLists[currVertex].end(); ++i) {
-      int adjVertex = *i;
-      if (!visited[adjVertex]) {
-        visited[adjVertex] = true;
-        queue.push_back(adjVertex);
-      }
+    while (!queue.empty()) {
+        int currVertex = queue.front();
+
+        cout << currVertex << " ";
+
+        queue.pop_front();
+
+        for (auto i = adjLists[currVertex].begin();
+             i != adjLists[currVertex].end(); ++i) {
+
+            int adjVertex = *i;
+
+            if (!visited[adjVertex]) {
+                visited[adjVertex] = true;
+                queue.push_back(adjVertex);
+            }
+        }
     }
-  }
+
+    cout << endl;
 }
 
 int main() {
-  Graph g(4);
-  g.addEdge(0, 1);
-  g.addEdge(0, 2);
-  g.addEdge(1, 2);
-  g.addEdge(2, 0);
-  g.addEdge(2, 3);
-  g.addEdge(3, 3);
+    Graph g(4);
 
-  g.BFS(2);
+    g.addEdge(0, 1);
+    g.addEdge(0, 2);
+    g.addEdge(1, 2);
+    g.addEdge(2, 0);
+    g.addEdge(2, 3);
+    g.addEdge(3, 3);
 
-  return 0;
+    g.BFS(2);
+
+    return 0;
 }
